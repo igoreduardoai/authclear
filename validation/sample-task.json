@@ -1,0 +1,57 @@
+{
+  "resourceType": "Task",
+  "id": "authclear-RejectionResponseExample",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Tell the member the review action and any reason printed on the resource. Ask the plan what the appeal deadline is. Do not invent that date.</p></div>"
+  },
+  "status": "requested",
+  "intent": "order",
+  "priority": "urgent",
+  "code": {
+    "coding": [
+      {
+        "system": "http://example.org/authclear-action",
+        "code": "explain-denial-ask-appeal-deadline"
+      }
+    ],
+    "text": "Tell the member the review action and any reason printed on the resource. Ask the plan what the appeal deadline is. Do not invent that date."
+  },
+  "description": "Tell the member the review action and any reason printed on the resource. Ask the plan what the appeal deadline is. Do not invent that date.",
+  "focus": {
+    "reference": "ClaimResponse/RejectionResponseExample"
+  },
+  "for": {
+    "reference": "Patient/SubscriberExample",
+    "display": "JOE SMITH"
+  },
+  "owner": {
+    "display": "Member services navigator (role queue, not a named person)"
+  },
+  "performerType": [
+    {
+      "text": "member-services-navigator"
+    }
+  ],
+  "authoredOn": "2005-05-02T11:02:00+05:00",
+  "input": [
+    {
+      "type": {
+        "text": "Decision group"
+      },
+      "valueString": "denied"
+    },
+    {
+      "type": {
+        "text": "Source reference"
+      },
+      "valueString": "ClaimResponse/RejectionResponseExample"
+    },
+    {
+      "type": {
+        "text": "Rule"
+      },
+      "valueString": "not-applicable"
+    }
+  ]
+}

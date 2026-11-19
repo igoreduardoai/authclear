@@ -1,0 +1,15 @@
+{
+  "label": "Internal prototype evaluation on published HL7 examples and synthetic variants. No external human validator.",
+  "seed": "authclear-2026-11-19",
+  "officialAuthclear": "7/7",
+  "officialBaseline": "4/7",
+  "holdoutDecision": 1,
+  "holdoutBaselineDecision": 0.12903225806451613,
+  "holdoutCount": 31,
+  "devCount": 89,
+  "pointerCoverage": 1,
+  "unsupportedValueFindings": 0,
+  "denialNoticeGrade": 6.4,
+  "denialNarrativeGrade": 30.1,
+  "pendedDue": "29/29"
+}

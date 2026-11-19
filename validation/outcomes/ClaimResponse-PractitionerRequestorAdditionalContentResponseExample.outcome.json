@@ -1,0 +1,347 @@
+{
+  "resourceType" : "OperationOutcome",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>OperationOutcome </b></p><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td><td><b>Source</b></td></tr><tr><td>Warning</td><td>ClaimResponse.item[0].extension[4].extension[0].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.item[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept)</td><td>Invalid Code</td><td>ValueSet 'https://valueset.x12.org/x217/005010/response/2000F/HCR/1/01/00/306' not found</td><td/><td>InstanceValidator</td></tr><tr><td>Warning</td><td>ClaimResponse.item[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/306' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].extension[0].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://www.nubc.org/CodeSystem/RevenueCodes' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].extension[1].value.ofType(CodeableConcept)</td><td>Invalid Code</td><td>ValueSet 'https://valueset.x12.org/x217/005010/request/2000F/UM/1/03/00/1365' not found</td><td/><td>InstanceValidator</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].extension[1].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].provider[0].extension[0].value.ofType(CodeableConcept)</td><td>Invalid Code</td><td>ValueSet 'https://valueset.x12.org/x217/005010/response/2010EA/NM1/1/01/00/98' not found</td><td/><td>InstanceValidator</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].provider[0].extension[0].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/98' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].productOrService.coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept)</td><td>Invalid Code</td><td>ValueSet 'https://valueset.x12.org/x217/005010/response/2000F/HCR/1/01/00/306' not found</td><td/><td>InstanceValidator</td></tr><tr><td>Warning</td><td>ClaimResponse.addItem[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept).coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'https://codesystem.x12.org/005010/306' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Information</td><td>ClaimResponse.outcome</td><td>Business Rule Violation</td><td>Reference to draft CodeSystem http://hl7.org/fhir/remittance-outcome|5.0.0 from active ValueSet http://hl7.org/fhir/us/davinci-pas/ValueSet/ClaimResponseOutcome|2.2.1</td><td/><td>TerminologyEngine</td></tr></table></div>"
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/tools/StructureDefinition/validator-version",
+    "valueString" : "FHIR Validation tool Version 7.0.6 (Git# 86bf796ddc97). Built 2026-11-13T23:28:34.381Z (5 days old)"
+  },
+  {
+    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
+    "valueString" : "fixtures/official/pas/ClaimResponse-PractitionerRequestorAdditionalContentResponseExample.json"
+  }],
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 5621
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.item[0].extension[4].extension[0].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 6154
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_ValueSet_NotFound"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "ValueSet 'https://valueset.x12.org/x217/005010/response/2000F/HCR/1/01/00/306' not found"
+    },
+    "expression" : ["ClaimResponse.item[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept)"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 6154
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/306' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.item[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 6574
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://www.nubc.org/CodeSystem/RevenueCodes' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.addItem[0].extension[0].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 6786
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_ValueSet_NotFound"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "ValueSet 'https://valueset.x12.org/x217/005010/request/2000F/UM/1/03/00/1365' not found"
+    },
+    "expression" : ["ClaimResponse.addItem[0].extension[1].value.ofType(CodeableConcept)"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 6786
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.addItem[0].extension[1].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 7288
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_ValueSet_NotFound"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "ValueSet 'https://valueset.x12.org/x217/005010/response/2010EA/NM1/1/01/00/98' not found"
+    },
+    "expression" : ["ClaimResponse.addItem[0].provider[0].extension[0].value.ofType(CodeableConcept)"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 7288
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/98' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.addItem[0].provider[0].extension[0].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 7442
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/1365' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.addItem[0].productOrService.coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 7815
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_ValueSet_NotFound"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "ValueSet 'https://valueset.x12.org/x217/005010/response/2000F/HCR/1/01/00/306' not found"
+    },
+    "expression" : ["ClaimResponse.addItem[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept)"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 7815
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/ClaimResponse|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'https://codesystem.x12.org/005010/306' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["ClaimResponse.addItem[0].adjudication[0].extension[0].extension[1].value.ofType(CodeableConcept).coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 4800
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "MSG_DRAFT_SRC_STATUS"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/profile-claimresponse|2.2.1"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "text" : "Reference to draft CodeSystem http://hl7.org/fhir/remittance-outcome|5.0.0 from active ValueSet http://hl7.org/fhir/us/davinci-pas/ValueSet/ClaimResponseOutcome|2.2.1"
+    },
+    "expression" : ["ClaimResponse.outcome"]
+  }]
+}
