@@ -258,10 +258,8 @@ export function App() {
       </main>
       <footer>
         <p>
-          AuthClear is a prototype by Igor Eduardo, Cortexa Social, Inc. It does not send email or SMS. The dry-run
-          file is a payload only.
+          AuthClear is a prototype by Igor Eduardo. It does not send email or SMS. The dry-run file is a payload only.
         </p>
-        <p>Contact: i@cortexa.social</p>
       </footer>
     </>
   );

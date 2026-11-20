@@ -2,7 +2,7 @@
 
 AuthClear reads a prior-authorization FHIR resource and shows the decision in plain language, with the next action a member-services navigator can download.
 
-It is a static prototype by Igor Eduardo, Cortexa Social, Inc. There is no login, no API key, and no server. The page runs in the browser.
+It is a static prototype by Igor Eduardo. There is no login, no API key, and no server. The page runs in the browser.
 
 The people it is for are member-services navigators who get a call about a prior authorization and are looking at a FHIR payload, not a script. It is also for the member who will start seeing that payload through a Patient Access API.
 
@@ -78,7 +78,7 @@ Official examples are copied from:
 - Da Vinci PAS 2.2.1, CC0-1.0, https://hl7.org/fhir/us/davinci-pas/2.2.1/package.tgz
 - Da Vinci PDex 2.2.0, CC0-1.0, https://hl7.org/fhir/us/davinci-pdex/STU2.2/package.tgz
 
-Checksums and the file list are in [fixtures/official/PROVENANCE.md](fixtures/official/PROVENANCE.md). Names in those files are HL7's example names. They are not real members and not customers of Cortexa Social, Inc.
+Checksums and the file list are in [fixtures/official/PROVENANCE.md](fixtures/official/PROVENANCE.md). Names in those files are HL7's example names. They are not real members and not customers of this project.
 
 There is no PHI in this repository.
 
@@ -101,5 +101,3 @@ The static build can go on Cloudflare Pages or a Hugging Face static Space. This
 ## License
 
 MIT. Copyright 2026 Igor Eduardo. See [LICENSE](LICENSE).
-
-Contact: i@cortexa.social

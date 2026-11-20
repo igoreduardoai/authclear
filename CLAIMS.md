@@ -2,7 +2,7 @@
 
 Each product claim used by this prototype, with the public source or the file in this repo that shows it. If a sentence is not in this table, it is not a result this project claims.
 
-There is no pilot, no named clinic using the product, no payer or EHR integration, no revenue, and no letter of intent. The company name on the page is Cortexa Social, Inc. The author is Igor Eduardo. There is no postal address in the repo.
+There is no pilot, no named clinic using the product, no payer or EHR integration, no revenue, and no letter of intent. The author is Igor Eduardo. There is no postal address in the repo.
 
 | Claim | Proof |
 | --- | --- |
