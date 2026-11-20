@@ -1,0 +1,117 @@
+{
+  "ran": true,
+  "version": "FHIR Validation tool Version 7.0.6 (Git# 86bf796ddc97). Built 2026-11-13T23:28:34.381Z (5 days old)",
+  "validatorJar": "https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar",
+  "command": "java -jar validator_cli.jar <file> -version 4.0.1 -ig <pas 2.2.1 package> -ig <pdex 2.2.0 package> -allow-example-urls",
+  "note": "Local HL7 FHIR Validator CLI  against FHIR R4 4.0.1, using the default terminology server (tx.fhir.org) and -allow-example-urls. That flag is on because the published HL7 examples use http://example.org identifiers; without it the official denial bundle reports those identifiers as errors. An earlier run with -tx n/a reported ISO 4217 USD as an error on three files because the currency system was not available offline; those counts are not the ones in this file. X12 code systems are not public, so those codes remain warnings. This is not an HL7 certification.",
+  "results": [
+    {
+      "file": "fixtures/official/pas/Bundle-RejectionResponseBundleExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 24,
+      "information": 7,
+      "outcome": "validation/outcomes/Bundle-RejectionResponseBundleExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/Bundle-ReferralPendingAuthorizationResponseBundleExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 8,
+      "information": 5,
+      "outcome": "validation/outcomes/Bundle-ReferralPendingAuthorizationResponseBundleExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/Bundle-ReferralAuthorizationResponseBundleExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 9,
+      "information": 5,
+      "outcome": "validation/outcomes/Bundle-ReferralAuthorizationResponseBundleExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/Bundle-ErrorResponseBundleExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 25,
+      "information": 7,
+      "outcome": "validation/outcomes/Bundle-ErrorResponseBundleExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/ClaimResponse-PractitionerRequestorAdditionalContentResponseExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 11,
+      "information": 1,
+      "outcome": "validation/outcomes/ClaimResponse-PractitionerRequestorAdditionalContentResponseExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/ClaimResponse-PASClaimInquiryResponseExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 2,
+      "information": 1,
+      "outcome": "validation/outcomes/ClaimResponse-PASClaimInquiryResponseExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pas/Claim-ReferralAuthorizationExample.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 16,
+      "information": 2,
+      "outcome": "validation/outcomes/Claim-ReferralAuthorizationExample.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pdex/ExplanationOfBenefit-PDexPriorAuth1.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 6,
+      "information": 0,
+      "outcome": "validation/outcomes/ExplanationOfBenefit-PDexPriorAuth1.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pdex/Patient-1.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 3,
+      "information": 0,
+      "outcome": "validation/outcomes/Patient-1.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pdex/Coverage-Coverage1.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 1,
+      "information": 0,
+      "outcome": "validation/outcomes/Coverage-Coverage1.outcome.json"
+    },
+    {
+      "file": "fixtures/official/pdex/Organization-Payer1.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 0,
+      "information": 1,
+      "outcome": "validation/outcomes/Organization-Payer1.outcome.json"
+    },
+    {
+      "file": "validation/sample-task.json",
+      "exitCode": 0,
+      "fatals": 0,
+      "errors": 0,
+      "warnings": 1,
+      "information": 3,
+      "outcome": "validation/outcomes/sample-task.outcome.json"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+/health
+  Content-Type: application/json
+/health.json
+  Content-Type: application/json

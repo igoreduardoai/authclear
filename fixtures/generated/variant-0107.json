@@ -1,0 +1,183 @@
+{
+  "resourceType": "Bundle",
+  "id": "variant-0107",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ExplanationOfBenefit",
+        "id": "variant-0107-eob",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/pdex-priorauthorization"
+          ]
+        },
+        "status": "active",
+        "use": "preauthorization",
+        "outcome": "queued",
+        "created": "2026-04-06T02:00:00Z",
+        "type": {
+          "coding": [
+            {
+              "code": "institutional"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/variant-0107-patient"
+        },
+        "insurer": {
+          "reference": "Organization/variant-0107-plan",
+          "display": "Synthetic Example Plan"
+        },
+        "provider": {
+          "display": "Synthetic Example Clinic"
+        },
+        "preAuthRefPeriod": [
+          {
+            "start": "2026-05-01",
+            "end": "2026-05-31"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/extension-levelOfServiceCode",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://codesystem.x12.org/005010/1338",
+                  "code": "U",
+                  "display": "Urgent"
+                }
+              ]
+            }
+          }
+        ],
+        "item": [
+          {
+            "sequence": 1,
+            "productOrService": {
+              "coding": [
+                {
+                  "display": "Example service 1"
+                }
+              ]
+            },
+            "adjudication": [
+              {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/extension-reviewAction",
+                    "extension": [
+                      {
+                        "url": "number",
+                        "valueString": "SYNvariant-0107"
+                      },
+                      {
+                        "url": "http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/extension-reviewActionCode",
+                        "valueCodeableConcept": {
+                          "coding": [
+                            {
+                              "system": "https://codesystem.x12.org/005010/306",
+                              "code": "A1",
+                              "display": "Certified in total"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "category": {
+                  "coding": [
+                    {
+                      "code": "submitted"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "total": [
+          {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/PriorAuthorizationUtilization",
+                "valueQuantity": {
+                  "value": 2
+                }
+              }
+            ],
+            "category": {
+              "coding": [
+                {
+                  "code": "eligible"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Claim",
+        "id": "variant-0107-claim",
+        "status": "active",
+        "use": "preauthorization",
+        "created": "2026-04-06T01:00:00Z",
+        "type": {
+          "coding": [
+            {
+              "code": "institutional"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/variant-0107-patient"
+        },
+        "provider": {
+          "display": "Synthetic Example Clinic"
+        },
+        "priority": {
+          "coding": [
+            {
+              "code": "normal"
+            }
+          ]
+        },
+        "insurance": [
+          {
+            "sequence": 1,
+            "focal": true,
+            "coverage": {
+              "display": "Synthetic Example Coverage"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "variant-0107-patient",
+        "name": [
+          {
+            "given": [
+              "Member"
+            ],
+            "family": "Synthetic0107"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Organization",
+        "id": "variant-0107-plan",
+        "name": "Synthetic Example Plan"
+      }
+    }
+  ]
+}
