@@ -10,7 +10,7 @@ Checked on 2026-11-21 (CST): HTTP 200 without cookies for `/`, `/health.json`, `
 ## Video
 
 - 134.8s, 1280x720, H.264 + AAC, recorded with Playwright on the GitHub Pages URL and following `docs/VIDEO-STORYBOARD.md`.
-- Narration: synthetic voice (edge-tts, en-US-GuyNeural). The first 10s show a "Narration: synthetic voice" banner over the product, and the same label stays in the corner for the whole video. Any video description must repeat it.
+- Narration: synthetic voice (edge-tts, en-US-GuyNeural). The first 10s show a "Narration: synthetic voice" banner at the bottom of the product screen (v2: moved so it no longer covers the "Not Certified" title), and the same label stays in the corner for the whole video. Any video description must repeat it.
 - Script: `docs/video-narration-lines.json`. The CMS date and the KFF 16% figure are spoken as citations, not results of this product.
 - The file is not committed and not uploaded to a public video host yet.
 
