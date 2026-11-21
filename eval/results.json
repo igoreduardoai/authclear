@@ -131,8 +131,8 @@
     }
   },
   "pointers": {
-    "sentences": 2168,
-    "withPointer": 2168,
+    "sentences": 2944,
+    "withPointer": 2944,
     "coverage": 1,
     "unsupportedValueFindings": 0
   },
@@ -143,8 +143,42 @@
   },
   "readability": {
     "library": "text-readability",
-    "denialNoticeGrade": 6.4,
+    "denialNoticeGrade": 6.2,
     "denialNarrativeGrade": 30.1,
-    "note": "The English denial notice is the readability number to use. The published narrative in that example scores much higher after HTML tags are removed, but it is generated markup (labels, codes, and links), so the gap is not a clean prose comparison. Spanish is not scored."
+    "denialNoticeWords": 83,
+    "englishNotice": {
+      "dev": {
+        "scored": 89,
+        "count": 89,
+        "meanGrade": 6.4
+      },
+      "holdout": {
+        "scored": 31,
+        "count": 31,
+        "meanGrade": 6.3
+      }
+    },
+    "rawReason": {
+      "dev": {
+        "present": 20,
+        "scored": 0,
+        "maxWords": 5,
+        "meanGrade": null
+      },
+      "holdout": {
+        "present": 11,
+        "scored": 0,
+        "maxWords": 5,
+        "meanGrade": null
+      }
+    },
+    "spanish": {
+      "formula": "fernandez-huerta",
+      "denialNoticeIndex": 87.6,
+      "words": 105,
+      "sentences": 11,
+      "syllables": 190
+    },
+    "note": "Flesch-Kincaid grades are from the text-readability package and are omitted below 12 words. The official denial example has no reason text. Synthetic reason strings are shorter than 12 words, so their grade is not reported. The published narrative grade is HTML with tags removed; it is labels, codes, and links, not a prose paragraph. The Fernández-Huerta figure is an ease index computed in this repo, not a U.S. grade, and it includes timestamps and codes."
   }
 }

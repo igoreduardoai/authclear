@@ -43,21 +43,30 @@ export function buildNotice(extraction: Extraction, lang: "en" | "es"): Notice {
   }
 
   const sentences: Sentence[] = [];
+  if (extraction.status) {
+    sentences.push({
+      id: "status",
+      text:
+        lang === "en"
+          ? `The resource status is ${extraction.status.value}.`
+          : `El estado del recurso es ${extraction.status.value}.`,
+      pointers: [{ source: "focus", path: extraction.status.path, value: extraction.status.value }],
+    });
+  }
   const seen = new Set<string>();
   for (const review of extraction.reviewCodes) {
     const key = `${review.itemSequence ?? ""}|${review.code}`;
     if (seen.has(key)) continue;
     seen.add(key);
     const displayPath = review.path.endsWith(".code") ? review.path.replace(/\.code$/, ".display") : null;
-    const sequencePath = itemSequencePath(review.path);
     const pointers: Pointer[] = [{ source: "focus", path: review.path, value: review.code }];
     if (review.display && displayPath) {
       pointers.push({ source: "focus", path: displayPath, value: review.display });
     }
-    const itemBit = review.itemSequence != null && sequencePath ? ` on item ${review.itemSequence}` : "";
-    const itemBitEs = review.itemSequence != null && sequencePath ? ` en el ítem ${review.itemSequence}` : "";
-    if (review.itemSequence != null && sequencePath) {
-      pointers.push({ source: "focus", path: sequencePath, value: String(review.itemSequence) });
+    const itemBit = review.itemSequence != null && review.sequencePath ? ` on item ${review.itemSequence}` : "";
+    const itemBitEs = review.itemSequence != null && review.sequencePath ? ` en el ítem ${review.itemSequence}` : "";
+    if (review.itemSequence != null && review.sequencePath) {
+      pointers.push({ source: "focus", path: review.sequencePath, value: String(review.itemSequence) });
     }
     const displayEn = review.display ? `, displayed as ${review.display}` : "";
     const displayEs = review.display ? `, con el texto ${review.display}` : "";
@@ -141,30 +150,9 @@ export function buildNotice(extraction: Extraction, lang: "en" | "es"): Notice {
       pointers: [{ source: "focus", path: extraction.units.path, value: extraction.units.text }],
     });
   }
-  if (extraction.validity && (extraction.validity.start || extraction.validity.end)) {
-    const label = validityLabel(extraction.validity.kind, lang);
-    const start = extraction.validity.start ?? "";
-    const end = extraction.validity.end ?? "";
-    const pointers: Pointer[] = [];
-    if (extraction.validity.start) {
-      pointers.push({
-        source: "focus",
-        path: `${extraction.validity.path}.start`,
-        value: extraction.validity.start,
-      });
-    }
-    if (extraction.validity.end) {
-      pointers.push({ source: "focus", path: `${extraction.validity.path}.end`, value: extraction.validity.end });
-    }
-    sentences.push({
-      id: "validity",
-      text:
-        lang === "en"
-          ? `The ${label} on the resource is ${start} through ${end}.`
-          : `El ${label} en el recurso va de ${start} a ${end}.`,
-      pointers,
-    });
-  }
+  extraction.dates.forEach((date, index) => {
+    sentences.push(dateSentence(date, index, lang));
+  });
   if (extraction.authId) {
     const noun = extraction.authId.kind === "review-number" ? "review number" : "administration reference";
     const nounEs =
@@ -187,6 +175,36 @@ export function buildNotice(extraction: Extraction, lang: "en" | "es"): Notice {
           : `El recurso incluye el código de error ${error.code}.`,
       pointers: [{ source: "focus", path: error.path, value: error.code }],
     });
+    if (error.followupCode && error.followupPath) {
+      sentences.push({
+        id: `error-followup-${index}`,
+        text:
+          lang === "en"
+            ? `The resource includes error follow-up code ${error.followupCode}.`
+            : `El recurso incluye el código de seguimiento de error ${error.followupCode}.`,
+        pointers: [{ source: "focus", path: error.followupPath, value: error.followupCode }],
+      });
+    }
+    if (error.element && error.elementPath) {
+      sentences.push({
+        id: `error-element-${index}`,
+        text:
+          lang === "en"
+            ? `The resource names error element ${error.element}.`
+            : `El recurso nombra el elemento de error ${error.element}.`,
+        pointers: [{ source: "focus", path: error.elementPath, value: error.element }],
+      });
+    }
+    if (error.location && error.locationPath) {
+      sentences.push({
+        id: `error-location-${index}`,
+        text:
+          lang === "en"
+            ? `The resource names error path ${error.location}.`
+            : `El recurso nombra la ruta de error ${error.location}.`,
+        pointers: [{ source: "focus", path: error.locationPath, value: error.location }],
+      });
+    }
   });
   if (extraction.urgent) {
     const where =
@@ -268,17 +286,59 @@ function headlineFor(extraction: Extraction): string {
   return extraction.reviewCodes[0]?.display ?? extraction.reviewCodes[0]?.code ?? extraction.decision;
 }
 
-function validityLabel(kind: NonNullable<Extraction["validity"]>["kind"], lang: "en" | "es"): string {
-  if (kind === "authorized-period") return lang === "en" ? "authorized period" : "período autorizado";
-  if (kind === "prior-auth-ref-period") {
-    return lang === "en" ? "prior-authorization reference period" : "período de referencia de la autorización previa";
+function dateSentence(date: Extraction["dates"][number], index: number, lang: "en" | "es"): Sentence {
+  const relatedId = date.relatedId;
+  if (date.point) {
+    return {
+      id: `date-${date.kind}-${index}`,
+      text: pointText(date.kind, date.point, lang),
+      pointers: [{ source: date.source, path: date.path, value: date.point, relatedId }],
+    };
   }
-  return lang === "en" ? "requested service dates" : "período de servicio solicitado";
+  const pointers: Pointer[] = [];
+  if (date.start) {
+    pointers.push({ source: date.source, path: `${date.path}.start`, value: date.start, relatedId });
+  }
+  if (date.end) {
+    pointers.push({ source: date.source, path: `${date.path}.end`, value: date.end, relatedId });
+  }
+  return {
+    id: `date-${date.kind}-${index}`,
+    text: periodText(date.kind, date.start ?? "", date.end ?? "", lang),
+    pointers,
+  };
 }
 
-function itemSequencePath(codePath: string): string | null {
-  const match = codePath.match(/^(.*?item\[\d+\])/);
-  return match ? `${match[1]}.itemSequence` : null;
+function pointText(kind: Extraction["dates"][number]["kind"], value: string, lang: "en" | "es"): string {
+  if (lang === "es") {
+    if (kind === "response-created") return `La marca de tiempo de la respuesta en el recurso es ${value}.`;
+    if (kind === "request-timestamp") return `La marca de tiempo publicada de la solicitud es ${value}.`;
+    if (kind === "issue-date") return `La fecha de emisión de la autorización previa en el recurso es ${value}.`;
+    if (kind === "discharge") return `La fecha de alta en el recurso es ${value}.`;
+    return `La hora de adjudicación en el recurso es ${value}.`;
+  }
+  if (kind === "response-created") return `The response timestamp on the resource is ${value}.`;
+  if (kind === "request-timestamp") return `The published request timestamp is ${value}.`;
+  if (kind === "issue-date") return `The prior-authorization issue date on the resource is ${value}.`;
+  if (kind === "discharge") return `The discharge date on the resource is ${value}.`;
+  return `The adjudication time on the resource is ${value}.`;
+}
+
+function periodText(kind: Extraction["dates"][number]["kind"], start: string, end: string, lang: "en" | "es"): string {
+  if (lang === "es") {
+    if (kind === "requested-service") return `Las fechas de servicio solicitado en el recurso son ${start} a ${end}.`;
+    if (kind === "admission") return `Las fechas de admisión en el recurso van de ${start} a ${end}.`;
+    if (kind === "prior-auth-ref-period") {
+      return `El período de referencia de la autorización previa en el recurso va de ${start} a ${end}.`;
+    }
+    return `El período autorizado en el recurso va de ${start} a ${end}.`;
+  }
+  if (kind === "requested-service") return `The requested service dates on the resource are ${start} through ${end}.`;
+  if (kind === "admission") return `The admission dates on the resource are ${start} through ${end}.`;
+  if (kind === "prior-auth-ref-period") {
+    return `The prior-authorization reference period on the resource is ${start} through ${end}.`;
+  }
+  return `The authorized period on the resource is ${start} through ${end}.`;
 }
 
 export function noticePlainText(notice: Notice): string {

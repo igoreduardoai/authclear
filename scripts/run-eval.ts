@@ -22,6 +22,8 @@ const card = {
   unsupportedValueFindings: summary.pointers.unsupportedValueFindings,
   denialNoticeGrade: summary.readability.denialNoticeGrade,
   denialNarrativeGrade: summary.readability.denialNarrativeGrade,
+  spanishDenialIndex: summary.readability.spanish.denialNoticeIndex,
+  rawReasonScored: summary.readability.rawReason.dev.scored + summary.readability.rawReason.holdout.scored,
   pendedDue: `${summary.pendedDue.matched}/${summary.pendedDue.eligible}`,
 };
 writeFileSync("src/generated/eval-summary.json", JSON.stringify(card, null, 2));

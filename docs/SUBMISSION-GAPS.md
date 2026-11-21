@@ -12,9 +12,12 @@ The form is the HIMSS27 Emerge Sessionboard application for Challenge 1, Patient
 - No slide deck.
 - Sessionboard fields that the build notes left for a person to answer are still open: incubator or accelerator affiliation, and whether the company is actively seeking funding. This repo does not answer them.
 - No presenter photo, bio, or confirmation of who stands on stage.
-- The Spanish text has not been reviewed by a native speaker.
+- The Spanish text has not been reviewed by a native speaker. A Fernández-Huerta index is reported in `eval/RESULTS.md`. That number is not a review.
 - No external human reviewer has checked the wording. The evaluation is internal and says so.
+- Appeal deadlines are not computed. The CMS FAQ's 14-day extension is not applied, because the resource does not say an extension was granted. A standard pending due time adds 168 hours, which this repo labels as its own reading of "seven calendar days", not as words CMS published.
+- The holdout ids were not changed in the field-mapping work. Their hashes are `eval/holdout-ids.sha256` and `eval/holdout-gold.sha256`.
 - The form was not submitted, and this project must not be submitted unless Igor explicitly says to submit it and names the challenge.
+- The mid-stage winner-gap gate was not run from this environment. `github.com/igoreduardoai/hackathon-lab` was not visible to the credentials here (`gh repo view` could not resolve it, and `git ls-remote` returned "Repository not found"). No gate result was invented.
 
 ## What a reviewer can open today
 

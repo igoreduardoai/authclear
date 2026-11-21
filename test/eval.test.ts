@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { generateCorpus } from "../src/lib/corpus";
+import { canonicalHoldoutGold, canonicalHoldoutIds, sha256Text } from "../src/lib/freeze";
 import { summarize } from "../src/lib/summary";
 
 describe("evaluation record", () => {
@@ -29,6 +30,10 @@ describe("evaluation record", () => {
     const gold = JSON.parse(readFileSync("fixtures/generated/gold.json", "utf8"));
     expect(onDisk).toEqual(corpus[0]?.resource);
     expect(gold).toEqual(corpus.map((entry) => entry.gold));
+    expect(readFileSync("eval/holdout-ids.sha256", "utf8").trim()).toBe(sha256Text(canonicalHoldoutIds(holdout)));
+    expect(readFileSync("eval/holdout-gold.sha256", "utf8").trim()).toBe(
+      sha256Text(canonicalHoldoutGold(gold, holdout)),
+    );
   });
 
   it("does not use forbidden pitch phrases in the public docs", () => {

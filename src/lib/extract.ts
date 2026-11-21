@@ -56,6 +56,7 @@ export function extract(input: unknown, options: ExtractOptions = {}): Extractio
     focusPath: "",
     focusReference: null,
     decision: "unknown",
+    status: null,
     reviewCodes: [],
     outcome: null,
     outcomeAgrees: null,
@@ -68,6 +69,7 @@ export function extract(input: unknown, options: ExtractOptions = {}): Extractio
     urgent: null,
     receipt: null,
     responseCreated: null,
+    dates: [],
     patient: { ...EMPTY_PATIENT },
     insurer: { ...EMPTY_INSURER },
     claimJoinedFromCatalog: false,
@@ -173,6 +175,10 @@ export function extract(input: unknown, options: ExtractOptions = {}): Extractio
         ? `${focus.resourceType}/${focus.id}`
         : null,
     decision,
+    status:
+      typeof focus.status === "string"
+        ? { value: focus.status, path: joinPath(focusPath, "status"), source: "focus" as const }
+        : null,
     reviewCodes,
     outcome,
     outcomeAgrees,
@@ -185,6 +191,7 @@ export function extract(input: unknown, options: ExtractOptions = {}): Extractio
     urgent,
     receipt,
     responseCreated,
+    dates: collectDates(focus, focusPath, responseCreated, receipt),
     patient,
     insurer,
     claimJoinedFromCatalog,
@@ -235,7 +242,9 @@ function collectReviewCodes(focus: Rec, focusPath: string): ReviewCode[] {
     const items = Array.isArray(focus[key]) ? (focus[key] as unknown[]) : [];
     items.forEach((item, itemIndex) => {
       if (!isRec(item)) return;
-      const sequence = typeof item.itemSequence === "number" ? item.itemSequence : null;
+      const itemPath = joinPath(focusPath, `${key}[${itemIndex}]`);
+      const sequences = readSequences(item);
+      const targets = sequences.length > 0 ? sequences : [{ value: null, path: "" }];
       const adjudications = Array.isArray(item.adjudication) ? item.adjudication : [];
       adjudications.forEach((adjudication, adjudicationIndex) => {
         if (!isRec(adjudication)) return;
@@ -250,21 +259,35 @@ function collectReviewCodes(focus: Rec, focusPath: string): ReviewCode[] {
           const coding = concept && Array.isArray(concept.coding) ? concept.coding[0] : null;
           if (!isRec(coding) || typeof coding.code !== "string") return;
           const codePath = joinPath(
-            focusPath,
-            `${key}[${itemIndex}].adjudication[${adjudicationIndex}].extension[${extensionIndex}].extension[${codeIndex}].valueCodeableConcept.coding[0].code`,
+            itemPath,
+            `adjudication[${adjudicationIndex}].extension[${extensionIndex}].extension[${codeIndex}].valueCodeableConcept.coding[0].code`,
           );
-          found.push({
-            code: coding.code,
-            display: typeof coding.display === "string" ? coding.display : null,
-            path: codePath,
-            source: "focus",
-            itemSequence: sequence,
-          });
+          for (const sequence of targets) {
+            found.push({
+              code: coding.code,
+              display: typeof coding.display === "string" ? coding.display : null,
+              path: codePath,
+              source: "focus",
+              itemSequence: sequence.value,
+              sequencePath: sequence.path ? joinPath(itemPath, sequence.path) : null,
+            });
+          }
         });
       });
     });
   }
   return found;
+}
+
+function readSequences(item: Rec): { value: number; path: string }[] {
+  if (typeof item.itemSequence === "number") return [{ value: item.itemSequence, path: "itemSequence" }];
+  if (Array.isArray(item.itemSequence)) {
+    return item.itemSequence.flatMap((value, index) =>
+      typeof value === "number" ? [{ value, path: `itemSequence[${index}]` }] : [],
+    );
+  }
+  if (typeof item.sequence === "number") return [{ value: item.sequence, path: "sequence" }];
+  return [];
 }
 
 function collectReasons(focus: Rec, focusPath: string): Extraction["reasons"] {
@@ -518,17 +541,167 @@ function collectErrors(focus: Rec, focusPath: string): Extraction["errors"] {
   const found: Extraction["errors"] = [];
   errors.forEach((error, index) => {
     if (!isRec(error) || !isRec(error.code) || !Array.isArray(error.code.coding)) return;
+    let followupCode: string | null = null;
+    let followupPath: string | null = null;
+    let element: string | null = null;
+    let elementPath: string | null = null;
+    let location: string | null = null;
+    let locationPath: string | null = null;
+    extensionsOf(error).forEach((extension, extensionIndex) => {
+      const base = joinPath(focusPath, `error[${index}].extension[${extensionIndex}]`);
+      if (urlIncludes(extension, "errorFollowupAction")) {
+        const coding = firstCoding(extension.valueCodeableConcept);
+        if (coding && typeof coding.code === "string") {
+          followupCode = coding.code;
+          followupPath = `${base}.valueCodeableConcept.coding[0].code`;
+        }
+      }
+      if (urlIncludes(extension, "errorPath") && typeof extension.valueString === "string") {
+        location = extension.valueString;
+        locationPath = `${base}.valueString`;
+      }
+      if (urlIncludes(extension, "errorElement")) {
+        extensionsOf(extension).forEach((child, childIndex) => {
+          if (typeof child.valueString === "string") {
+            element = child.valueString;
+            elementPath = `${base}.extension[${childIndex}].valueString`;
+          }
+        });
+      }
+    });
     error.code.coding.forEach((coding, codingIndex) => {
       if (isRec(coding) && typeof coding.code === "string") {
         found.push({
           code: coding.code,
           path: joinPath(focusPath, `error[${index}].code.coding[${codingIndex}].code`),
           source: "focus",
+          followupCode,
+          followupPath,
+          element,
+          elementPath,
+          location,
+          locationPath,
         });
       }
     });
   });
   return found;
+}
+
+function collectDates(
+  focus: Rec,
+  focusPath: string,
+  responseCreated: Extraction["responseCreated"],
+  receipt: Extraction["receipt"],
+): Extraction["dates"] {
+  const dates: Extraction["dates"] = [];
+  if (responseCreated) {
+    dates.push({
+      kind: "response-created",
+      point: responseCreated.value,
+      start: null,
+      end: null,
+      path: responseCreated.path,
+      source: "focus",
+    });
+  }
+  if (Array.isArray(focus.preAuthRefPeriod)) {
+    focus.preAuthRefPeriod.forEach((period, index) => {
+      if (!isRec(period)) return;
+      dates.push({
+        kind: "prior-auth-ref-period",
+        point: null,
+        start: typeof period.start === "string" ? period.start : null,
+        end: typeof period.end === "string" ? period.end : null,
+        path: joinPath(focusPath, `preAuthRefPeriod[${index}]`),
+        source: "focus",
+      });
+    });
+  }
+  for (const key of ["item", "addItem"] as const) {
+    const items = Array.isArray(focus[key]) ? (focus[key] as unknown[]) : [];
+    items.forEach((item, itemIndex) => {
+      if (!isRec(item)) return;
+      const itemPath = joinPath(focusPath, `${key}[${itemIndex}]`);
+      extensionsOf(item).forEach((extension, index) => {
+        const base = joinPath(itemPath, `extension[${index}]`);
+        if (urlIncludes(extension, "itemPreAuthIssueDate") && typeof extension.valueDate === "string") {
+          dates.push({
+            kind: "issue-date",
+            point: extension.valueDate,
+            start: null,
+            end: null,
+            path: `${base}.valueDate`,
+            source: "focus",
+          });
+        }
+        if (urlIncludes(extension, "dischargeDate") && typeof extension.valueDate === "string") {
+          dates.push({
+            kind: "discharge",
+            point: extension.valueDate,
+            start: null,
+            end: null,
+            path: `${base}.valueDate`,
+            source: "focus",
+          });
+        }
+        if (urlIncludes(extension, "itemPreAuthPeriod") && isRec(extension.valuePeriod)) {
+          dates.push(periodDate("authorized-period", extension.valuePeriod, `${base}.valuePeriod`));
+        }
+        if (urlIncludes(extension, "itemRequestedServiceDate") && isRec(extension.valuePeriod)) {
+          dates.push(periodDate("requested-service", extension.valuePeriod, `${base}.valuePeriod`));
+        }
+        if (urlIncludes(extension, "admissionDates") && isRec(extension.valuePeriod)) {
+          dates.push(periodDate("admission", extension.valuePeriod, `${base}.valuePeriod`));
+        }
+      });
+      const adjudications = Array.isArray(item.adjudication) ? item.adjudication : [];
+      adjudications.forEach((adjudication, adjudicationIndex) => {
+        if (!isRec(adjudication)) return;
+        extensionsOf(adjudication).forEach((extension, extensionIndex) => {
+          const url = String(extension.url ?? "");
+          if (!url.includes("when-adjudicated") && !url.includes("whenAdjudicated")) return;
+          if (typeof extension.valueDateTime !== "string") return;
+          dates.push({
+            kind: "adjudicated",
+            point: extension.valueDateTime,
+            start: null,
+            end: null,
+            path: joinPath(itemPath, `adjudication[${adjudicationIndex}].extension[${extensionIndex}].valueDateTime`),
+            source: "focus",
+          });
+        });
+      });
+    });
+  }
+  if (receipt) {
+    dates.push({
+      kind: "request-timestamp",
+      point: receipt.value,
+      start: null,
+      end: null,
+      path: receipt.path,
+      source: receipt.source,
+      relatedId: receipt.relatedId,
+    });
+  }
+  return dates.filter((date) => date.point || date.start || date.end);
+}
+
+function periodDate(kind: Extraction["dates"][number]["kind"], period: Rec, path: string): Extraction["dates"][number] {
+  return {
+    kind,
+    point: null,
+    start: typeof period.start === "string" ? period.start : null,
+    end: typeof period.end === "string" ? period.end : null,
+    path,
+    source: "focus",
+  };
+}
+
+function firstCoding(value: unknown): Rec | null {
+  if (!isRec(value) || !Array.isArray(value.coding)) return null;
+  return isRec(value.coding[0]) ? value.coding[0] : null;
 }
 
 function findUrgent(focus: Rec, focusPath: string, claim: Located | null): Extraction["urgent"] {
