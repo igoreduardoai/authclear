@@ -1,0 +1,8 @@
+{
+  "status": "ok",
+  "service": "authclear",
+  "version": "0.1.0",
+  "commit": "d8b2059",
+  "demo": "static",
+  "auth": "none"
+}
