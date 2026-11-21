@@ -245,6 +245,13 @@ export function App() {
               </dd>
             </div>
             <div>
+              <dt>Fernández-Huerta, Spanish denial notice</dt>
+              <dd>
+                {summary.spanishDenialIndex?.toFixed(1) ?? "n/a"}. Ease index from this repo, not a U.S. grade. Raw
+                reason strings scored: {summary.rawReasonScored}.
+              </dd>
+            </div>
+            <div>
               <dt>Pending decision-clock due times</dt>
               <dd>{summary.pendedDue} matched the written rule.</dd>
             </div>

@@ -8,6 +8,8 @@ test("denied example explains the review action and downloads a Task", async ({ 
   await expect(page.getByText("Synthetic / HL7-published example data — no real members.")).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Not Certified" })).toBeVisible();
   await expect(page.getByText("Grouped as a denial")).toBeVisible();
+  await expect(page.locator("#case-panel")).toContainText("The resource status is active");
+  await expect(page.locator("#case-panel")).toContainText("does not include a specific reason");
   await expect(page.locator("#decision")).toContainText("The outcome field is complete");
   await expect(page.getByRole("heading", { level: 3, name: "Next action" })).toBeVisible();
 
@@ -48,6 +50,8 @@ test("pending, patient access, invalid, and Spanish views stay readable", async 
   await page.getByRole("button", { name: "Español" }).click();
   await expect(page.getByText("Agrupado como negativa")).toBeVisible();
   await expect(page.locator("#decision")).toContainText("Not Certified");
+  await expect(page.locator("#case-panel")).toContainText("El estado del recurso es active");
+  await expect(page.locator("#case-panel")).toContainText("no incluye un motivo específico");
 });
 
 test("has no axe violations on desktop or a narrow viewport", async ({ page }) => {

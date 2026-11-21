@@ -6,7 +6,7 @@ import { addHours } from "./deadline";
 import { buildNotice, noticePlainText } from "./explain";
 import { extract } from "./extract";
 import { pointerMismatches, type RelatedDoc } from "./pointers";
-import { fleschKincaidGrade, stripHtml } from "./readability";
+import { fernandezHuerta, fleschKincaidGrade, stripHtml } from "./readability";
 import type { Decision } from "./types";
 
 interface OfficialCase {
@@ -94,8 +94,31 @@ export interface EvalSummary {
     library: "text-readability";
     denialNoticeGrade: number | null;
     denialNarrativeGrade: number | null;
+    denialNoticeWords: number;
+    englishNotice: { dev: GradeReport; holdout: GradeReport };
+    rawReason: { dev: ReasonReport; holdout: ReasonReport };
+    spanish: {
+      formula: "fernandez-huerta";
+      denialNoticeIndex: number | null;
+      words: number;
+      sentences: number;
+      syllables: number;
+    };
     note: string;
   };
+}
+
+interface GradeReport {
+  scored: number;
+  count: number;
+  meanGrade: number | null;
+}
+
+interface ReasonReport {
+  present: number;
+  scored: number;
+  maxWords: number;
+  meanGrade: number | null;
 }
 
 interface FieldRates {
@@ -134,7 +157,7 @@ export function summarize(): EvalSummary {
   let dueEligible = 0;
   let dueMatched = 0;
 
-  const scoreSplit = (entries: typeof corpus): FieldRates => {
+  const scoreSplit = (entries: typeof corpus, sink: GradeSink): FieldRates => {
     const totals = {
       count: entries.length,
       decision: 0,
@@ -162,8 +185,18 @@ export function summarize(): EvalSummary {
         const expectedDue = addHours(entry.gold.receipt, entry.gold.urgent ? 72 : 168);
         if (action.deadline.due === expectedDue) dueMatched += 1;
       }
+      if (entry.gold.reason) {
+        sink.reasonPresent += 1;
+        const words = entry.gold.reason.trim().split(/\s+/).filter(Boolean).length;
+        if (words > sink.reasonMaxWords) sink.reasonMaxWords = words;
+        if (fleschKincaidGrade(entry.gold.reason) != null) sink.reasonScored += 1;
+      }
       for (const lang of ["en", "es"] as const) {
         const notice = buildNotice(extraction, lang);
+        if (lang === "en") {
+          const grade = fleschKincaidGrade(noticePlainText(notice));
+          if (grade != null) sink.noticeGrades.push(grade);
+        }
         pointerSentences += notice.sentences.length;
         pointerHits += notice.sentences.filter((sentence) => sentence.pointers.length > 0).length;
         unsupported += pointerMismatches(entry.resource, [], notice.sentences).length;
@@ -172,8 +205,10 @@ export function summarize(): EvalSummary {
     return totals;
   };
 
-  const dev = scoreSplit(devGold);
-  const holdout = scoreSplit(holdoutGold);
+  const devGrades = emptyGradeSink();
+  const holdoutGrades = emptyGradeSink();
+  const dev = scoreSplit(devGold, devGrades);
+  const holdout = scoreSplit(holdoutGold, holdoutGrades);
   const baselineDev = baselineDecisionAccuracy(devGold);
   const baselineHoldout = baselineDecisionAccuracy(holdoutGold);
 
@@ -197,6 +232,7 @@ export function summarize(): EvalSummary {
     readFileSync("fixtures/official/pas/Bundle-RejectionResponseBundleExample.json", "utf8"),
   );
   const denialNotice = noticePlainText(buildNotice(extract(denial), "en"));
+  const denialSpanish = fernandezHuerta(noticePlainText(buildNotice(extract(denial), "es")));
   const narrative = stripHtml(String(denial.entry[0].resource.text.div));
 
   const officialCorrect = officialCases.filter((row) => row.authclearCorrect).length;
@@ -240,9 +276,59 @@ export function summarize(): EvalSummary {
       library: "text-readability",
       denialNoticeGrade: fleschKincaidGrade(denialNotice),
       denialNarrativeGrade: fleschKincaidGrade(narrative),
-      note: "The English denial notice is the readability number to use. The published narrative in that example scores much higher after HTML tags are removed, but it is generated markup (labels, codes, and links), so the gap is not a clean prose comparison. Spanish is not scored.",
+      denialNoticeWords: denialNotice.split(/\s+/).filter(Boolean).length,
+      englishNotice: {
+        dev: gradeReport(devGrades),
+        holdout: gradeReport(holdoutGrades),
+      },
+      rawReason: {
+        dev: reasonReport(devGrades),
+        holdout: reasonReport(holdoutGrades),
+      },
+      spanish: {
+        formula: "fernandez-huerta",
+        denialNoticeIndex: denialSpanish?.index ?? null,
+        words: denialSpanish?.words ?? 0,
+        sentences: denialSpanish?.sentences ?? 0,
+        syllables: denialSpanish?.syllables ?? 0,
+      },
+      note: "Flesch-Kincaid grades are from the text-readability package and are omitted below 12 words. The official denial example has no reason text. Synthetic reason strings are shorter than 12 words, so their grade is not reported. The published narrative grade is HTML with tags removed; it is labels, codes, and links, not a prose paragraph. The Fernández-Huerta figure is an ease index computed in this repo, not a U.S. grade, and it includes timestamps and codes.",
     },
   };
+}
+
+interface GradeSink {
+  noticeGrades: number[];
+  reasonPresent: number;
+  reasonScored: number;
+  reasonMaxWords: number;
+}
+
+function emptyGradeSink(): GradeSink {
+  return { noticeGrades: [], reasonPresent: 0, reasonScored: 0, reasonMaxWords: 0 };
+}
+
+function gradeReport(sink: GradeSink): GradeReport {
+  return {
+    scored: sink.noticeGrades.length,
+    count: sink.noticeGrades.length,
+    meanGrade: mean(sink.noticeGrades),
+  };
+}
+
+function reasonReport(sink: GradeSink): ReasonReport {
+  return {
+    present: sink.reasonPresent,
+    scored: sink.reasonScored,
+    maxWords: sink.reasonMaxWords,
+    meanGrade: null,
+  };
+}
+
+function mean(values: number[]): number | null {
+  if (values.length === 0) return null;
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return Math.round((total / values.length) * 10) / 10;
 }
 
 function baselineDecisionAccuracy(entries: { gold: GoldRecord; resource: Record<string, unknown> }[]): number {
@@ -278,7 +364,25 @@ export function renderResultsMarkdown(summary: EvalSummary): string {
 
 ${summary.label}
 
-Seed \`${summary.seed}\`. The holdout is every synthetic id whose SHA-256(\`${summary.seed}|id\`) maps to a bucket under 30. The split is a pure function of that seed. It was created in this build, not pre-registered on an earlier day.
+Seed \`${summary.seed}\`. The holdout is every synthetic id whose SHA-256(\`${summary.seed}|id\`) maps to a bucket under 30. The id list and the holdout gold fields are frozen by \`eval/holdout-ids.sha256\` and \`eval/holdout-gold.sha256\`. This extractor change did not edit that list. Do not change it to improve a score.
+
+## Before and after the field-mapping change
+
+The before column is the evaluation already recorded on this branch before the status, item-sequence, date, and error-detail sentences were added. Unit tests then: 18 passed. The after column is this file.
+
+| Metric | Before | After |
+| --- | --- | --- |
+| Official decision, AuthClear | 7/7 | ${summary.official.authclearDecisionCorrect}/${summary.official.count} |
+| Official decision, outcome-only baseline | 4/7 | ${summary.official.baselineDecisionCorrect}/${summary.official.count} |
+| Synthetic dev / holdout | 89 / 31 | ${summary.synthetic.dev} / ${summary.synthetic.holdout} |
+| Holdout decision | 100.0% | ${pct(summary.synthetic.authclear.holdout.decision)} |
+| Holdout baseline decision | 12.9% | ${pct(summary.synthetic.baselineDecisionAccuracy.holdout)} |
+| Notice sentences with a pointer | 2168/2168 | ${summary.pointers.withPointer}/${summary.pointers.sentences} |
+| Unsupported notice values | 0 | ${summary.pointers.unsupportedValueFindings} |
+| English denial notice, Flesch-Kincaid | 6.4 | ${summary.readability.denialNoticeGrade ?? "n/a"} |
+| Denial narrative, tags removed | 30.1 | ${summary.readability.denialNarrativeGrade ?? "n/a"} |
+| Spanish denial notice | not scored | Fernández-Huerta ${summary.readability.spanish.denialNoticeIndex ?? "n/a"} |
+| Pending non-drug due times | 29/29 | ${summary.pendedDue.matched}/${summary.pendedDue.eligible} |
 
 ## Official HL7 examples
 
@@ -309,7 +413,7 @@ The baseline reads \`outcome\` and a few top-level fields. It does not open the 
 | Receipt (\`Claim.created\`) | ${pct(summary.synthetic.authclear.dev.receipt)} | ${pct(summary.synthetic.authclear.holdout.receipt)} |
 | Baseline decision | ${pct(summary.synthetic.baselineDecisionAccuracy.dev)} | ${pct(summary.synthetic.baselineDecisionAccuracy.holdout)} |
 
-Pending, non-drug decision-clock due times matched the written 72-hour / 168-hour rule in **${summary.pendedDue.matched}/${summary.pendedDue.eligible}** cases.
+Pending, non-drug decision-clock due times matched the cited rule in **${summary.pendedDue.matched}/${summary.pendedDue.eligible}** cases: 72 hours when the level-of-service code is \`U\`, otherwise 168 hours. CMS states seven calendar days and calendar time. CMS does not state "168 hours". That addition is this demo's clock-preserving reading, and it is not adjusted for daylight saving.
 
 ## Pointers and readability
 
@@ -317,10 +421,21 @@ Notice sentences with a pointer: **${summary.pointers.withPointer}/${summary.poi
 
 Pointer mismatches (value not found at the path, or a number in the sentence with no pointer): **${summary.pointers.unsupportedValueFindings}**.
 
-Flesch-Kincaid grade (\`text-readability\`) for the English denial notice: **${summary.readability.denialNoticeGrade ?? "n/a"}**.
+Flesch-Kincaid grade (\`text-readability\`) for the English denial notice (${summary.readability.denialNoticeWords} words): **${summary.readability.denialNoticeGrade ?? "n/a"}**.
 
 Same library on the published narrative in that example, HTML tags removed: **${summary.readability.denialNarrativeGrade ?? "n/a"}**.
 
+Mean Flesch-Kincaid grade of English notices: dev **${fmtGrade(summary.readability.englishNotice.dev)}**, holdout **${fmtGrade(summary.readability.englishNotice.holdout)}**. These means were not used to edit the templates.
+
+Raw reason text: dev ${summary.readability.rawReason.dev.present} strings, ${summary.readability.rawReason.dev.scored} scored, longest ${summary.readability.rawReason.dev.maxWords} words. Holdout ${summary.readability.rawReason.holdout.present} strings, ${summary.readability.rawReason.holdout.scored} scored, longest ${summary.readability.rawReason.holdout.maxWords} words. The official denial example has no reason text.
+
+Fernández-Huerta index for the Spanish denial notice: **${summary.readability.spanish.denialNoticeIndex ?? "n/a"}** (${summary.readability.spanish.words} words, ${summary.readability.spanish.sentences} sentences, ${summary.readability.spanish.syllables} syllables). Formula in this repo: 206.84 − 0.60 × syllables per 100 words − 1.02 × sentences per 100 words. This run did not retrieve the 1959 article. The index is not a U.S. grade. Timestamps and codes are included.
+
 ${summary.readability.note}
 `;
+}
+
+function fmtGrade(report: GradeReport): string {
+  if (report.meanGrade == null) return "n/a";
+  return `${report.meanGrade.toFixed(1)} (${report.scored} notices)`;
 }

@@ -16,6 +16,38 @@ export interface ReviewCode {
   path: string;
   source: PointerSource;
   itemSequence: number | null;
+  sequencePath: string | null;
+}
+
+export interface MappedDate {
+  kind:
+    | "response-created"
+    | "request-timestamp"
+    | "issue-date"
+    | "authorized-period"
+    | "requested-service"
+    | "prior-auth-ref-period"
+    | "admission"
+    | "discharge"
+    | "adjudicated";
+  point: string | null;
+  start: string | null;
+  end: string | null;
+  path: string;
+  source: PointerSource;
+  relatedId?: string;
+}
+
+export interface MappedError {
+  code: string;
+  path: string;
+  source: PointerSource;
+  followupCode: string | null;
+  followupPath: string | null;
+  element: string | null;
+  elementPath: string | null;
+  location: string | null;
+  locationPath: string | null;
 }
 
 export interface SourcedText {
@@ -34,6 +66,7 @@ export interface Extraction {
   focusPath: string;
   focusReference: string | null;
   decision: Decision;
+  status: { value: string; path: string; source: PointerSource } | null;
   reviewCodes: ReviewCode[];
   outcome: { value: string; path: string; source: PointerSource } | null;
   outcomeAgrees: boolean | null;
@@ -69,6 +102,7 @@ export interface Extraction {
     note: string;
   } | null;
   responseCreated: { value: string; path: string; source: PointerSource } | null;
+  dates: MappedDate[];
   patient: {
     reference: string | null;
     label: string | null;
@@ -83,7 +117,7 @@ export interface Extraction {
     source: PointerSource;
   };
   claimJoinedFromCatalog: boolean;
-  errors: { code: string; path: string; source: PointerSource }[];
+  errors: MappedError[];
   claimType: string | null;
   drugsExcluded: boolean;
 }
