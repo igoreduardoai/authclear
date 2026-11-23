@@ -2,7 +2,7 @@
   "status": "ok",
   "service": "authclear",
   "version": "0.1.0",
-  "commit": "d8b2059",
+  "commit": "9ce2cbf",
   "demo": "static",
   "auth": "none"
 }
