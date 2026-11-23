@@ -8,7 +8,7 @@ import { buildExports } from "@/lib/task";
 import { buildCallScript } from "@/lib/callScript";
 import { plainLead } from "@/lib/plain";
 import { splitSteps } from "@/lib/steps";
-import { formatTimestamp } from "@/lib/formatTime";
+import { formatPlainDate, humanizeTimestamps, memberFacingStep } from "@/lib/formatTime";
 import { withLetterStyles } from "@/lib/letterStyle";
 import type { Pointer } from "@/lib/types";
 import summary from "@/generated/eval-summary.json";
@@ -70,7 +70,7 @@ export function App() {
         Skip to decision
       </a>
       <header className="border-b border-border bg-background">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 md:px-6">
+        <div className="mx-auto flex h-14 max-w-[76rem] items-center gap-3 px-4 md:px-6">
           <ShieldCheck className="size-5 shrink-0 text-primary" aria-hidden="true" />
           <h1 className="m-0 text-[1.125rem] leading-[1.3] font-semibold">AuthClear</h1>
           <p className="m-0 hidden text-sm text-muted-foreground md:block">
@@ -95,7 +95,7 @@ export function App() {
             </button>
           </div>
         </div>
-        <p className="mx-auto mt-0 mb-0 flex max-w-6xl items-start gap-2 px-4 pt-2 pb-3 text-sm leading-[1.45] text-muted-foreground md:px-6">
+        <p className="mx-auto mt-0 mb-0 flex max-w-[76rem] items-start gap-2 px-4 pt-2 pb-3 text-sm leading-[1.45] text-muted-foreground md:px-6">
           <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           <span>
             Synthetic / HL7-published example data — no real members. Not a coverage decision, clinical advice, or
@@ -103,7 +103,7 @@ export function App() {
           </span>
         </p>
       </header>
-      <main className="mx-auto grid w-full max-w-6xl min-w-0 gap-4 px-4 py-4 md:grid-cols-[300px_minmax(0,44rem)] md:gap-6 md:px-6 md:py-6">
+      <main className="mx-auto grid w-full max-w-[76rem] min-w-0 gap-4 px-4 py-4 md:grid-cols-[280px_minmax(0,1fr)] md:gap-8 md:px-6 md:py-6">
         <ExampleRail
           caseId={customResource === undefined ? caseId : ""}
           narrow={narrow}
@@ -144,7 +144,7 @@ export function App() {
               <ol lang={lang} className="my-0 flex list-decimal flex-col gap-4 pl-6">
                 {view.notice.sentences.map((sentence) => (
                   <li key={sentence.id} className="max-w-[65ch] text-[1.0625rem] leading-[1.6]">
-                    <span>{sentence.text}</span>
+                    <span>{humanizeTimestamps(sentence.text, lang)}</span>
                     <Button
                       type="button"
                       variant="ghost"
@@ -186,12 +186,7 @@ export function App() {
                 <dt className="text-sm text-muted-foreground">Decision-clock maximum</dt>
                 <dd className="m-0 text-base">
                   {view.action.deadline.due ? (
-                    <>
-                      <span>{formatTimestamp(view.action.deadline.due) ?? view.action.deadline.due}</span>
-                      <span className="mt-1 block font-mono text-[0.8125rem] text-muted-foreground">
-                        {view.action.deadline.due}
-                      </span>
-                    </>
+                    <span>{formatPlainDate(view.action.deadline.due, lang) ?? view.action.deadline.due}</span>
                   ) : (
                     `Not computed (${view.action.deadline.ruleId})`
                   )}
@@ -263,7 +258,7 @@ export function App() {
           </details>
         </div>
       </main>
-      <footer className="mx-auto max-w-6xl px-4 pt-4 pb-10 text-sm text-muted-foreground md:px-6">
+      <footer className="mx-auto max-w-[76rem] px-4 pt-4 pb-10 text-sm text-muted-foreground md:px-6">
         <p>AuthClear is a prototype by Igor Eduardo. It does not send email or SMS. The dry-run file is a payload only.</p>
       </footer>
       <SourceSheet
@@ -315,7 +310,7 @@ function buildView(demo: DemoCase, lang: Lang) {
     exports,
     lead: plainLead(extraction, lang),
     script: buildCallScript(extraction, lang),
-    steps: splitSteps(lang === "es" ? action.summaryEs : action.summaryEn),
+    steps: splitSteps(lang === "es" ? action.summaryEs : action.summaryEn).map((step) => memberFacingStep(step, lang)),
     conflict: conflictSentence?.text ?? null,
   };
 }

@@ -1,3 +1,4 @@
+import { formatPlainDate } from "./formatTime";
 import type { Extraction, Pointer } from "./types";
 
 export interface ScriptLine {
@@ -30,10 +31,11 @@ export function buildCallScript(extraction: Extraction, lang: "en" | "es"): Call
         pointer: fieldPointer(extraction.authId),
       });
     }
-    if (extraction.responseCreated) {
+    const englishDate = extraction.responseCreated ? formatPlainDate(extraction.responseCreated.value, "en") : null;
+    if (extraction.responseCreated && englishDate) {
       lines.push({
         id: "date",
-        text: `The letter date is ${extraction.responseCreated.value}.`,
+        text: `The letter date is ${englishDate}.`,
         pointer: fieldPointer(extraction.responseCreated),
       });
     }
@@ -78,10 +80,11 @@ export function buildCallScript(extraction: Extraction, lang: "en" | "es"): Call
         pointer: fieldPointer(extraction.authId),
       });
     }
-    if (extraction.responseCreated) {
+    const spanishDate = extraction.responseCreated ? formatPlainDate(extraction.responseCreated.value, "es") : null;
+    if (extraction.responseCreated && spanishDate) {
       lines.push({
         id: "date",
-        text: `La fecha de la carta es ${extraction.responseCreated.value}.`,
+        text: `La fecha de la carta es ${spanishDate}.`,
         pointer: fieldPointer(extraction.responseCreated),
       });
     }

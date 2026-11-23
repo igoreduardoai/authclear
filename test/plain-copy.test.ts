@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { CASES } from "../src/lib/cases";
 import { buildCallScript } from "../src/lib/callScript";
 import { extract } from "../src/lib/extract";
-import { formatTimestamp } from "../src/lib/formatTime";
+import { formatPlainDate, formatTimestamp } from "../src/lib/formatTime";
 import { withLetterStyles } from "../src/lib/letterStyle";
 import { getByPath } from "../src/lib/path";
 import { leadCatalog, plainLead } from "../src/lib/plain";
@@ -54,11 +54,18 @@ describe("call script", () => {
         if (!extraction.urgent) expect(script.lines.some((line) => line.id === "urgent")).toBe(false);
 
         const allowed = new Set(script.lines.flatMap((line) => (line.pointer?.value ? [line.pointer.value] : [])));
+        expect(script.text).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
         for (const line of script.lines) {
           if (!line.pointer) continue;
           expect(line.pointer.path.length).toBeGreaterThan(0);
-          expect(line.text).toContain(String(line.pointer.value));
           expect(readPointer(demo, line.pointer)).toBe(line.pointer.value);
+          if (line.id === "date") {
+            const spoken = formatPlainDate(String(line.pointer.value), lang);
+            expect(spoken).not.toBeNull();
+            expect(line.text).toContain(spoken!);
+          } else {
+            expect(line.text).toContain(String(line.pointer.value));
+          }
         }
         for (const value of candidateValues(extraction)) {
           if (script.text.includes(value)) expect(allowed.has(value)).toBe(true);
@@ -78,8 +85,10 @@ describe("call script", () => {
 });
 
 describe("timestamp formatting", () => {
-  it("keeps the offset printed on the record", () => {
+  it("keeps the offset printed on the record and spells the calendar date", () => {
     expect(formatTimestamp("2005-05-05T11:01:00+05:00")).toBe("Thu, May 5, 2005, 11:01 AM (UTC+5)");
+    expect(formatPlainDate("2005-05-02T11:02:00+05:00", "en")).toBe("May 2, 2005");
+    expect(formatPlainDate("2005-05-02T11:02:00+05:00", "es")).toBe("2 de mayo de 2005");
   });
 });
 

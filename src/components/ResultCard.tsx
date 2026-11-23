@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { Decision } from "@/lib/types";
 import type { CallScript } from "@/lib/callScript";
-import { formatTimestamp } from "@/lib/formatTime";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -52,7 +51,7 @@ export function ResultCard({
   const [copied, setCopied] = useState(false);
   const status = STATUS_STYLE[decision];
   const Icon = status.icon;
-  const humanDue = due ? formatTimestamp(due) : null;
+  const badgeText = decision === "denied" ? (lang === "es" ? "No aprobado" : "Not approved") : kicker;
 
   async function copyScript() {
     try {
@@ -66,29 +65,19 @@ export function ResultCard({
 
   return (
     <Card id="decision" aria-live="polite" className="min-w-0 p-4 md:p-8">
-      <Badge lang={lang} className={`h-auto gap-2 rounded-full px-3 py-1.5 text-sm font-semibold ${status.badge}`}>
-        <Icon aria-hidden="true" />
-        {kicker}
-      </Badge>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Badge lang={lang} className={`h-auto gap-2 rounded-full px-3 py-1.5 text-sm font-semibold ${status.badge}`}>
+          <Icon aria-hidden="true" />
+          {badgeText}
+        </Badge>
+        {badgeText !== kicker ? <p className="m-0 text-xs text-muted-foreground">{kicker}</p> : null}
+      </div>
       <h2 className="mt-4 mb-0 text-[2rem] leading-[1.1] font-bold tracking-[-0.02em] md:text-[2.5rem]">
         {headline}
       </h2>
       <p lang={lang} className="mt-3 mb-0 max-w-[65ch] text-xl leading-snug">
         {lead}
       </p>
-      {conflict ? (
-        <p lang={lang} className="mt-4 mb-0 max-w-[65ch] text-sm leading-[1.45] text-muted-foreground">
-          <span className="font-semibold text-foreground">Note on this record. </span>
-          {conflict}
-        </p>
-      ) : null}
-      {due ? (
-        <p className="mt-4 mb-0 text-base">
-          <span className="text-muted-foreground">Decision-clock maximum </span>
-          <span>{humanDue ?? due}</span>
-          {humanDue ? <span className="mt-1 block font-mono text-[0.8125rem] text-muted-foreground">{due}</span> : null}
-        </p>
-      ) : null}
       <div className="mt-6">
         <h3 className="mt-0 mb-2 text-[1.125rem] leading-[1.35] font-semibold">Next action</h3>
         <ol lang={lang} className="my-0 flex max-w-[65ch] list-decimal flex-col gap-2 pl-5 text-[1.0625rem] leading-[1.6] wrap-break-word">
@@ -113,16 +102,16 @@ export function ResultCard({
           </p>
         </div>
       ) : null}
-      <div className="order-1 mt-4 flex flex-col gap-2 md:order-2 md:mt-6 md:flex-row md:flex-wrap">
-        <Button type="button" className="min-h-11 w-full px-4 text-base md:w-auto" onClick={onLetter}>
+      <div className="order-1 mt-4 flex flex-col gap-2 md:order-2 md:mt-6 md:flex-row md:flex-nowrap md:items-center">
+        <Button type="button" className="min-h-11 w-full shrink-0 px-4 text-base md:w-auto" onClick={onLetter}>
           Download member letter
         </Button>
-        <Button type="button" variant="outline" className="min-h-11 bg-surface px-4 text-base" onClick={onTask}>
+        <Button type="button" variant="outline" className="min-h-11 shrink-0 bg-surface px-3 text-base" onClick={onTask}>
           Download Task JSON
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="outline" className="min-h-11 bg-surface px-4 text-base">
+            <Button type="button" variant="outline" className="min-h-11 shrink-0 bg-surface px-3 text-base">
               More downloads
               <ChevronDown aria-hidden="true" />
             </Button>
@@ -139,10 +128,16 @@ export function ResultCard({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button type="button" variant="outline" className="min-h-11 bg-surface px-4 text-base" onClick={onShowSource}>
+        <Button type="button" variant="ghost" className="min-h-11 shrink-0 px-2 text-base text-primary" onClick={onShowSource}>
           Show source
         </Button>
       </div>
+      {conflict ? (
+        <p lang={lang} className="order-3 mt-4 mb-0 max-w-[65ch] text-xs leading-snug text-muted-foreground">
+          {conflict}
+        </p>
+      ) : null}
+      {due ? <p className="order-3 mt-1 mb-0 text-xs text-muted-foreground">{due}</p> : null}
     </Card>
   );
 }
