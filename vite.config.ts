@@ -1,7 +1,12 @@
 import { execSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
+
+const root = path.dirname(fileURLToPath(import.meta.url));
 
 function writeHealth(dir: string): void {
   mkdirSync(dir, { recursive: true });
@@ -41,5 +46,10 @@ function healthPlugin(): Plugin {
 
 export default defineConfig({
   base: "./",
-  plugins: [react(), healthPlugin()],
+  plugins: [react(), tailwindcss(), healthPlugin()],
+  resolve: {
+    alias: {
+      "@": path.resolve(root, "src"),
+    },
+  },
 });
