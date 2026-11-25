@@ -1,5 +1,29 @@
 # What is not done for the HIMSS27 Emerge submission
 
+Update 2026-11-25 (America/Chicago): several items below are now done. This file is kept as the original gap list, with the current state summarized here. Nothing has been submitted.
+
+Now in place:
+- Live no-login demos at https://authclear-delta.vercel.app and https://igoreduardoai.github.io/authclear/ (commit `9ce2cbf` of the `redesign-ui` branch). `GET /health` returns static JSON on both hosts.
+- Walkthrough video, 74.9s, YouTube unlisted: https://youtu.be/O2yJwSbtwy4 (narration is one continuous ElevenLabs take of Igor's cloned voice; on-screen label names that). Local file: `authclear-demo-2026-11-23-v4.mp4`.
+- The first screen is the decision (Not approved / Not Certified / Download member letter). Raw FHIR paths are behind Show source. That redesign is PR #4, not merged.
+- Default-branch `main` now has a short README pointing at those demo URLs. The working source is still on the open PR stack (#1, #2, #4) and has not been merged.
+
+Still not done:
+- No five-second test recorded with a person who had not seen the page.
+- No ≤10-slide deck.
+- Incubator/accelerator and "actively seeking funding" still need Igor's confirmation on the Sessionboard form.
+- No presenter photo/bio confirmation.
+- Spanish text has not had a native-speaker review.
+- No external human wording review.
+- Health-monitor workflow is on the PR branches, not on `main`, so it will not run on a schedule until those PRs are merged (needs Igor's OK).
+- Remaining design-standard nits on the first viewport, not fixed here so the live page stays in sync with the recorded video: the muted line "The outcome field is complete. The review action code is A3..." is still on the decision card; step 1 still says "review action" and "resource".
+- Do not submit unless Igor explicitly says to submit and names HIMSS27 Emerge.
+
+
+---
+
+# What is not done for the HIMSS27 Emerge submission
+
 This file is a gap list. Nothing here has been submitted.
 
 The form is the HIMSS27 Emerge Sessionboard application for Challenge 1, Patient Access, Experience & Care Navigation. The deadline cited in the build notes is 06/12/2026 23:59 CST. Re-read the live form in a browser on the day of submission. This repo was not able to render that form.

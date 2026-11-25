@@ -1,6 +1,8 @@
 # Video storyboard
 
-Not filmed. No audio, no upload, no public link. This is a shot list for a later recording of three minutes or less.
+Update 2026-11-25: a later walkthrough was recorded and uploaded unlisted as https://youtu.be/O2yJwSbtwy4 (74.9s, v4). The shot list below is the earlier plan and was not the cut that was filmed.
+
+Earlier status, kept for the record: not filmed. No audio, no upload, no public link. This is a shot list for a later recording of three minutes or less.
 
 1. 0–20s. The default screen, already open, no login. Headline "Not Certified". One line that outcome says complete and the review action says A3. The next-action card. A caption with the January 1, 2027 Patient Access date and the KFF 16% figure, each spoken as a citation rather than as a result of this product.
 2. 20–90s. Click Pending. Show the due time `2005-05-05T11:01:00+05:00` and the note that the Claim was attached from the same published IG. Download the Task JSON and the CSV. Open the dry-run file and point at `"delivered": false`.
