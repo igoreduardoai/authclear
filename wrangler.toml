@@ -1,0 +1,6 @@
+name = "authclear"
+compatibility_date = "2026-11-19"
+pages_build_output_dir = "dist"
+
+# No account_id and no API token are stored here.
+# Deploy only with your own Cloudflare account. See docs/DEPLOY.md.

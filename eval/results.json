@@ -1,0 +1,184 @@
+{
+  "seed": "authclear-2026-11-19",
+  "label": "Internal prototype evaluation on published HL7 examples and synthetic variants. No external human validator.",
+  "official": {
+    "count": 7,
+    "authclearDecisionCorrect": 7,
+    "baselineDecisionCorrect": 4,
+    "authclearDecisionAccuracy": 1,
+    "baselineDecisionAccuracy": 0.5714285714285714,
+    "cases": [
+      {
+        "id": "Bundle-RejectionResponseBundleExample",
+        "expected": "denied",
+        "authclear": "denied",
+        "baseline": "approved",
+        "authclearCorrect": true,
+        "baselineCorrect": false
+      },
+      {
+        "id": "Bundle-ReferralPendingAuthorizationResponseBundleExample",
+        "expected": "pended",
+        "authclear": "pended",
+        "baseline": "approved",
+        "authclearCorrect": true,
+        "baselineCorrect": false
+      },
+      {
+        "id": "Bundle-ReferralAuthorizationResponseBundleExample",
+        "expected": "approved",
+        "authclear": "approved",
+        "baseline": "approved",
+        "authclearCorrect": true,
+        "baselineCorrect": true
+      },
+      {
+        "id": "Bundle-ErrorResponseBundleExample",
+        "expected": "error",
+        "authclear": "error",
+        "baseline": "error",
+        "authclearCorrect": true,
+        "baselineCorrect": true
+      },
+      {
+        "id": "ExplanationOfBenefit-PDexPriorAuth1",
+        "expected": "approved",
+        "authclear": "approved",
+        "baseline": "pended",
+        "authclearCorrect": true,
+        "baselineCorrect": false
+      },
+      {
+        "id": "ClaimResponse-PractitionerRequestorAdditionalContentResponseExample",
+        "expected": "approved",
+        "authclear": "approved",
+        "baseline": "approved",
+        "authclearCorrect": true,
+        "baselineCorrect": true
+      },
+      {
+        "id": "ClaimResponse-PASClaimInquiryResponseExample",
+        "expected": "approved",
+        "authclear": "approved",
+        "baseline": "approved",
+        "authclearCorrect": true,
+        "baselineCorrect": true
+      }
+    ]
+  },
+  "synthetic": {
+    "count": 120,
+    "dev": 89,
+    "holdout": 31,
+    "holdoutIds": [
+      "variant-0004",
+      "variant-0009",
+      "variant-0014",
+      "variant-0015",
+      "variant-0017",
+      "variant-0018",
+      "variant-0023",
+      "variant-0030",
+      "variant-0031",
+      "variant-0033",
+      "variant-0035",
+      "variant-0039",
+      "variant-0045",
+      "variant-0052",
+      "variant-0054",
+      "variant-0055",
+      "variant-0062",
+      "variant-0066",
+      "variant-0073",
+      "variant-0077",
+      "variant-0080",
+      "variant-0083",
+      "variant-0084",
+      "variant-0086",
+      "variant-0092",
+      "variant-0102",
+      "variant-0104",
+      "variant-0106",
+      "variant-0108",
+      "variant-0115",
+      "variant-0117"
+    ],
+    "authclear": {
+      "dev": {
+        "count": 89,
+        "decision": 1,
+        "reviewCode": 1,
+        "service": 1,
+        "units": 1,
+        "validity": 1,
+        "reason": 1,
+        "receipt": 1
+      },
+      "holdout": {
+        "count": 31,
+        "decision": 1,
+        "reviewCode": 1,
+        "service": 1,
+        "units": 1,
+        "validity": 1,
+        "reason": 1,
+        "receipt": 1
+      }
+    },
+    "baselineDecisionAccuracy": {
+      "dev": 0.30337078651685395,
+      "holdout": 0.12903225806451613
+    }
+  },
+  "pointers": {
+    "sentences": 2944,
+    "withPointer": 2944,
+    "coverage": 1,
+    "unsupportedValueFindings": 0
+  },
+  "pendedDue": {
+    "eligible": 29,
+    "matched": 29,
+    "rate": 1
+  },
+  "readability": {
+    "library": "text-readability",
+    "denialNoticeGrade": 6.2,
+    "denialNarrativeGrade": 30.1,
+    "denialNoticeWords": 83,
+    "englishNotice": {
+      "dev": {
+        "scored": 89,
+        "count": 89,
+        "meanGrade": 6.4
+      },
+      "holdout": {
+        "scored": 31,
+        "count": 31,
+        "meanGrade": 6.3
+      }
+    },
+    "rawReason": {
+      "dev": {
+        "present": 20,
+        "scored": 0,
+        "maxWords": 5,
+        "meanGrade": null
+      },
+      "holdout": {
+        "present": 11,
+        "scored": 0,
+        "maxWords": 5,
+        "meanGrade": null
+      }
+    },
+    "spanish": {
+      "formula": "fernandez-huerta",
+      "denialNoticeIndex": 87.6,
+      "words": 105,
+      "sentences": 11,
+      "syllables": 190
+    },
+    "note": "Flesch-Kincaid grades are from the text-readability package and are omitted below 12 words. The official denial example has no reason text. Synthetic reason strings are shorter than 12 words, so their grade is not reported. The published narrative grade is HTML with tags removed; it is labels, codes, and links, not a prose paragraph. The Fernández-Huerta figure is an ease index computed in this repo, not a U.S. grade, and it includes timestamps and codes."
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "resourceType": "Bundle",
+  "id": "variant-0085",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ClaimResponse",
+        "id": "variant-0085-response",
+        "status": "active",
+        "use": "preauthorization",
+        "outcome": "complete",
+        "created": "2026-04-05T04:00:00Z",
+        "type": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+              "code": "professional"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/variant-0085-patient"
+        },
+        "insurer": {
+          "reference": "Organization/variant-0085-plan"
+        },
+        "request": {
+          "reference": "Claim/variant-0085-claim"
+        },
+        "identifier": [
+          {
+            "system": "http://example.org/authclear-synthetic",
+            "value": "SYNvariant-0085"
+          }
+        ],
+        "item": [
+          {
+            "itemSequence": 1,
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/extension-itemAuthorizedDetail",
+                "extension": [
+                  {
+                    "url": "quantity",
+                    "valueQuantity": {
+                      "value": 5
+                    }
+                  },
+                  {
+                    "url": "productOrServiceCode",
+                    "valueCodeableConcept": {
+                      "coding": [
+                        {
+                          "display": "Example service 0"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "url": "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/extension-itemPreAuthPeriod",
+                "valuePeriod": {
+                  "start": "2026-05-01",
+                  "end": "2026-05-31"
+                }
+              }
+            ],
+            "adjudication": [
+              {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/extension-reviewAction",
+                    "extension": [
+                      {
+                        "url": "number",
+                        "valueString": "SYNvariant-0085"
+                      },
+                      {
+                        "url": "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/extension-reviewActionCode",
+                        "valueCodeableConcept": {
+                          "coding": [
+                            {
+                              "system": "https://codesystem.x12.org/005010/306",
+                              "code": "A1",
+                              "display": "Certified in total"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "category": {
+                  "coding": [
+                    {
+                      "code": "submitted"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Claim",
+        "id": "variant-0085-claim",
+        "status": "active",
+        "use": "preauthorization",
+        "created": "2026-04-05T03:00:00Z",
+        "type": {
+          "coding": [
+            {
+              "code": "professional"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/variant-0085-patient"
+        },
+        "provider": {
+          "display": "Synthetic Example Clinic"
+        },
+        "priority": {
+          "coding": [
+            {
+              "code": "normal"
+            }
+          ]
+        },
+        "insurance": [
+          {
+            "sequence": 1,
+            "focal": true,
+            "coverage": {
+              "display": "Synthetic Example Coverage"
+            }
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/extension-levelOfServiceCode",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://codesystem.x12.org/005010/1338",
+                  "code": "U",
+                  "display": "Urgent"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "variant-0085-patient",
+        "name": [
+          {
+            "given": [
+              "Member"
+            ],
+            "family": "Synthetic0085"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Organization",
+        "id": "variant-0085-plan",
+        "name": "Synthetic Example Plan"
+      }
+    }
+  ]
+}

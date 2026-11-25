@@ -1,0 +1,127 @@
+{
+  "resourceType" : "OperationOutcome",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>OperationOutcome </b></p><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td><td><b>Source</b></td></tr><tr><td>Warning</td><td>Task.code.coding[0].system</td><td>Not Found</td><td>A definition for CodeSystem 'http://example.org/authclear-action' could not be found, so the code cannot be validated</td><td/><td>TerminologyEngine</td></tr><tr><td>Information</td><td>Task.input[0].type</td><td>Invalid Code</td><td>Binding for path Task.input[0].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked</td><td/><td>InstanceValidator</td></tr><tr><td>Information</td><td>Task.input[1].type</td><td>Invalid Code</td><td>Binding for path Task.input[1].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked</td><td/><td>InstanceValidator</td></tr><tr><td>Information</td><td>Task.input[2].type</td><td>Invalid Code</td><td>Binding for path Task.input[2].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked</td><td/><td>InstanceValidator</td></tr></table></div>"
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/tools/StructureDefinition/validator-version",
+    "valueString" : "FHIR Validation tool Version 7.0.6 (Git# 86bf796ddc97). Built 2026-11-13T23:28:34.381Z (5 days old)"
+  },
+  {
+    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
+    "valueString" : "validation/sample-task.json"
+  }],
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 11
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 4
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "TerminologyEngine"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/Task|4.0.1"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "text" : "A definition for CodeSystem 'http://example.org/authclear-action' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["Task.code.coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 39
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 8
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_Binding_NoSource"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/Task|4.0.1"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "Binding for path Task.input[0].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked"
+    },
+    "expression" : ["Task.input[0].type"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 45
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 8
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_Binding_NoSource"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/Task|4.0.1"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "Binding for path Task.input[1].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked"
+    },
+    "expression" : ["Task.input[1].type"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 51
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 8
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueString" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "Terminology_TX_Binding_NoSource"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
+      "valueString" : "http://hl7.org/fhir/StructureDefinition/Task|4.0.1"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "text" : "Binding for path Task.input[2].type in profile StructureDefinition[http://hl7.org/fhir/StructureDefinition/Task|4.0.1] has no source, so can't be checked"
+    },
+    "expression" : ["Task.input[2].type"]
+  }]
+}

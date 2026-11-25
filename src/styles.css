@@ -1,0 +1,182 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource/atkinson-hyperlegible-next/latin-400.css";
+@import "@fontsource/atkinson-hyperlegible-next/latin-600.css";
+@import "@fontsource/atkinson-hyperlegible-next/latin-700.css";
+@import "@fontsource/geist-mono/latin-400.css";
+
+:root {
+  color-scheme: light;
+  --bg: #f7f9fb;
+  --surface: #ffffff;
+  --ink: #0f1b2d;
+  --quiet: #475467;
+  --line: #d0d5dd;
+  --control-border: #667085;
+  --primary: #0f6b6b;
+  --primary-hover: #0c5656;
+  --primary-foreground: #ffffff;
+  --focus: #2563eb;
+  --denied: #b42318;
+  --denied-bg: #fef3f2;
+  --pended: #93370d;
+  --pended-bg: #fffaeb;
+  --approved: #067647;
+  --approved-bg: #ecfdf3;
+  --error: #5925dc;
+  --error-bg: #f4f3ff;
+  --unknown: #344054;
+  --unknown-bg: #f2f4f7;
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --secondary: var(--unknown-bg);
+  --secondary-foreground: var(--ink);
+  --muted: var(--unknown-bg);
+  --muted-foreground: var(--quiet);
+  --accent: var(--unknown-bg);
+  --accent-foreground: var(--ink);
+  --destructive: var(--denied);
+  --border: var(--line);
+  --input: var(--control-border);
+  --ring: var(--focus);
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-heading: "Atkinson Hyperlegible Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "Atkinson Hyperlegible Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-quiet: var(--quiet);
+  --color-line: var(--line);
+  --color-control: var(--control-border);
+  --color-focus: var(--focus);
+  --color-denied: var(--denied);
+  --color-denied-bg: var(--denied-bg);
+  --color-pended: var(--pended);
+  --color-pended-bg: var(--pended-bg);
+  --color-approved: var(--approved);
+  --color-approved-bg: var(--approved-bg);
+  --color-error: var(--error);
+  --color-error-bg: var(--error-bg);
+  --color-unknown: var(--unknown);
+  --color-unknown-bg: var(--unknown-bg);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.1);
+  --shadow-sheet: 0 20px 24px -4px rgb(16 24 40 / 0.1);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  a {
+    color: var(--primary);
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 70;
+  background: var(--ink);
+  color: var(--surface);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.skip:focus {
+  top: 0.5rem;
+}
+
+.json {
+  max-height: 24rem;
+  overflow: auto;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  border-radius: 0.5rem;
+}
+
+.json-children {
+  display: block;
+  margin-left: 1rem;
+}
+
+.json-key {
+  color: var(--bg);
+}
+
+.json-leaf.active,
+.json-node.active {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

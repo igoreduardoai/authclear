@@ -1,0 +1,10 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+blob-report/
+*.log
+validator_cli.jar
+.DS_Store
+public/health
+public/health.json
