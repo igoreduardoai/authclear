@@ -100,7 +100,12 @@ There is no PHI in this repository.
 
 ## Deploy
 
-The static build can go on Cloudflare Pages or a Hugging Face static Space. This copy was not deployed: there is no Cloudflare or Hugging Face token in the environment, and the build does not invent one. Steps are in [docs/DEPLOY.md](docs/DEPLOY.md). Vercel is not used.
+Live demo, no login (this branch, commit `9ce2cbf`):
+
+- [https://authclear-delta.vercel.app](https://authclear-delta.vercel.app)
+- [https://igoreduardoai.github.io/authclear/](https://igoreduardoai.github.io/authclear/)
+
+`GET /health` on either host returns static JSON. No API key and no login. Further static-host notes are in [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## License
 
